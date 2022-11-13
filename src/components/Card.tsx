@@ -6,7 +6,7 @@ const Card: React.FC<AnimeType> = (props) => {
     const {titles, averageRating, posterImage, startDate, slug} = props?.attributes
 
     return (
-        <div className={'max-w-max h-full flex flex-col rounded-2xl bg-blue-100 drop-shadow-xl'}>
+        <div className={'relative max-w-max h-full border border-neutral-400 flex flex-col rounded-2xl bg-blue-100 drop-shadow-xl'}>
             <Link to={`/anime/${slug}`}>
                 <img src={posterImage?.large} alt="animeImg" width={260} height={280} className={'rounded-t-2xl'}/>
             </Link>
@@ -22,6 +22,9 @@ const Card: React.FC<AnimeType> = (props) => {
                     <p>{startDate}</p>
                 </div>
             </div>
+            {props.favRemove && <button className={'absolute top-[5px] right-[5px] rounded-md p-2 bg-blue-500 hover:bg-red-600 uppercase text-amber-50'}>
+                REMOVE
+            </button>}
         </div>
     );
 };

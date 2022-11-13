@@ -1,6 +1,7 @@
 
 export type AnimeStateType = {
     data: AnimeType[]
+    favourite: string[]
     status: AnimeSliceEnum
 }
 
@@ -49,5 +50,11 @@ type AnimeCoverImageType = {
 export type AnimeType = {
     id: string
     attributes: AnimeAttributesType
+    favRemove?: boolean
 }
 
+export type fetchParamsType = {
+    queryOffset: string
+    querySearch: string
+    rating: string
+}
