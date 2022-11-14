@@ -3,8 +3,9 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {AnimeType} from "../redux/anime/types";
 import {PuffLoader} from "react-spinners";
-import {addFavourite, removeFavourite} from "../redux/anime/slice";
+import {addFavourite} from "../redux/anime/slice";
 import {useAppDispatch, useAppSelector} from "../redux/store";
+import {deleteFavourite} from "../utils/deleteFavourite";
 
 const AnimePage: React.FC = () => {
     const {slug} = useParams()
@@ -24,15 +25,13 @@ const AnimePage: React.FC = () => {
         dispatch(addFavourite(id))
         localStorage.setItem('fv',(localStorage.getItem('fv') || '') + `${id},`)
     }
-    const deleteFavourite = (id: string) => {
-        dispatch(removeFavourite(id))
-        const favStorageArr = localStorage.getItem('fv')?.slice(0, -1).split(',')
-        const removeFavId = favStorageArr?.filter(item => item !== id).join(',')
-        localStorage.setItem('fv', `${removeFavId},`)
-    }
 
     if (!data) {
         return <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={!data} size={120}/>
+    }
+
+    const removeFavourite = () => {
+        deleteFavourite(data.id, dispatch)
     }
 
     const {
@@ -75,7 +74,7 @@ const AnimePage: React.FC = () => {
             >
                 ADD TO FAVOURITE
             </button>}
-            {isFavouriteId && <button onClick={() => deleteFavourite(data.id)}
+            {isFavouriteId && <button onClick={removeFavourite}
                 className={'my-5 rounded-md p-3 bg-red-500 hover:bg-red-600 uppercase text-amber-50'}
             >
                 REMOVE

@@ -27,8 +27,6 @@ const Home = () => {
         const querySearch =  searchValue ? `&filter[text]=${searchValue}` : ''
         const rating = filters.includes(selected) && selected !== filters[0] ? `&sort=-${selected}` : ''
 
-        console.log('filter', rating)
-
         dispatch(fetchAnime({
             queryOffset,
             querySearch,

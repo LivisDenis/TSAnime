@@ -2,6 +2,7 @@
 export type AnimeStateType = {
     data: AnimeType[]
     favourite: string[]
+    offset: number
     status: AnimeSliceEnum
 }
 

@@ -9,7 +9,6 @@ import {Link} from "react-router-dom";
 const Favourite = () => {
     const favouriteStorageId = localStorage.getItem('fv')?.slice(0, -1)
     const [isLoading, setIsLoading] = useState(true)
-    const [offset, setOffset] = useState(1)
     const [favouriteData, setFavouriteData] = useState<AnimeType[]>()
     const {favourite} = useAppSelector(state => state.anime)
     console.log(favourite)
@@ -18,7 +17,7 @@ const Favourite = () => {
         axios.get(`https://kitsu.io/api/edge/anime?filter[id]=${favouriteStorageId}`)
             .then(res => setFavouriteData(res.data.data))
             .then(() => setIsLoading(false))
-    }, [offset])
+    }, [])
 
     return (
         <div>
@@ -33,7 +32,8 @@ const Favourite = () => {
                 </Link>
             </div>}
             <div className={'mt-10 grid grid-cols-4 gap-5'}>
-                {favouriteData?.map(item =>
+                {favouriteData?.filter(item => favourite.includes(item.id))
+                    .map(item =>
                     <Card favRemove={true} key={item.id} {...item}/>
                 )}
             </div>

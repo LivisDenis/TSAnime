@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchAnime} from "./AsyncActions";
 import {AnimeSliceEnum, AnimeStateType} from "./types";
-import {act} from "react-dom/test-utils";
 
 const initialState: AnimeStateType = {
     data: [],
     favourite: [],
+    offset: 0,
     status: AnimeSliceEnum.LOADING
 }
 
@@ -13,6 +13,9 @@ export const animeSlice = createSlice({
     name: 'anime',
     initialState,
     reducers: {
+        // offsetCount(state, action: PayloadAction<number>) {
+        //     state.offset = state.data.find(item => Number(item.id) > 8) ? action.payload : ''
+        // },
         addFavourite(state, action: PayloadAction<string>) {
             state.favourite = [...state.favourite, action.payload]
         },

@@ -12,9 +12,10 @@ const App = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const favStorage = localStorage.getItem('fv')?.slice(0, -1)
-        favStorage && dispatch(addFavourite(favStorage))
-        console.log(favStorage)
+        const favStorage = localStorage.getItem('fv')?.slice(0, -1).slice(1).split(',')
+        favStorage && favStorage.forEach(item =>
+            dispatch(addFavourite(item))
+        )
     }, [])
 
     return (
