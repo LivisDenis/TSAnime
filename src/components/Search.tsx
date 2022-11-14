@@ -9,8 +9,7 @@ const Search: React.FC<SearchPropsType> = ({setSearchValue, searchValue}) => {
 
     return (
         <div className={'relative mr-7'}>
-            <input type="search"
-                   name="search"
+            <input type="text"
                    value={searchValue}
                    onChange={e => setSearchValue(e.target.value)}
                    placeholder='Search...'
