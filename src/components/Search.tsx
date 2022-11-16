@@ -8,12 +8,12 @@ type SearchPropsType = {
 const Search: React.FC<SearchPropsType> = ({setSearchValue, searchValue}) => {
 
     return (
-        <div className={'relative mr-7'}>
+        <div className={'relative mr-7 max-[740px]:mr-4 max-[740px]:w-[50%]'}>
             <input type="text"
                    value={searchValue}
                    onChange={e => setSearchValue(e.target.value)}
                    placeholder='Search...'
-                   className={'max-w-[600px] min-w-[300px] shadow-md w-full py-3 pl-10 rounded-md mx-auto'}/>
+                   className={'max-w-[600px] min-w-[300px] max-[740px]:min-w-full shadow-md w-full py-3 pl-10 rounded-md mx-auto'}/>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                  stroke="currentColor" className="absolute w-7 h-7 top-[10px] left-[8px]">
                 <path strokeLinecap="round" strokeLinejoin="round"

@@ -23,7 +23,7 @@ const AnimePage: React.FC = () => {
 
     const addToFavourite = (id: string) => {
         dispatch(addFavourite(id))
-        localStorage.setItem('fv',(localStorage.getItem('fv') || '') + `${id},`)
+        localStorage.setItem('fv', (localStorage.getItem('fv') || '') + `${id},`)
     }
 
     if (!data) {
@@ -39,29 +39,26 @@ const AnimePage: React.FC = () => {
         titles, description, youtubeVideoId, episodeCount
     } = data.attributes
 
+    const info = [
+        {name: 'Rating:', value: averageRating},
+        {name: 'Released:', value: startDate},
+        {name: 'Episode count:', value: episodeCount},
+        {name: 'Age:', value: ageRatingGuide},
+    ]
+
     return (
         <div>
-            <h1 className={'text-[28px]'}>{titles.en || titles.en_jp}</h1>
-            <h2 className={'text-[18px] text-gray-500'}>{titles.ja_jp}</h2>
-            <div className={'flex mt-4'}>
-                <img src={posterImage.large} width={280} alt="posterImage" className={'mr-7'}/>
-                <div className={'flex flex-col max-w-[400px] w-full'}>
-                    <div className={'grid grid-cols-2 gap-5 mt-1'}>
-                        <h2>Rating:</h2>
-                        <p>{averageRating}</p>
-                    </div>
-                    <div className={'grid grid-cols-2 gap-5 mt-1'}>
-                        <h2>Released:</h2>
-                        <p>{startDate}</p>
-                    </div>
-                    <div className={'grid grid-cols-2 gap-5 mt-1'}>
-                        <h2>Episode count:</h2>
-                        <p>{episodeCount}</p>
-                    </div>
-                    <div className={'grid grid-cols-2 gap-5 mt-1'}>
-                        <h2>Age:</h2>
-                        <p>{ageRatingGuide}</p>
-                    </div>
+            <h1 className={'text-[28px] max-[590px]:text-center'}>{titles.en || titles.en_jp}</h1>
+            <h2 className={'text-[18px] text-gray-500 max-[590px]:text-center'}>{titles.ja_jp}</h2>
+            <div className={'flex mt-4 max-[590px]:flex-col'}>
+                <img src={posterImage.large} width={280} alt="posterImage" className={'mr-7 max-[670px]:w-[250px] max-[590px]:mx-auto'}/>
+                <div className={'flex flex-col max-w-[400px] w-full max-[590px]:mt-5 max-[590px]:mx-auto max-[590px]:max-w-full'}>
+                    {info.map((item, i) =>
+                        <div key={i} className={'grid grid-cols-2 gap-5 py-1 even:bg-slate-300 odd:bg-white'}>
+                            <h2>{item.name}</h2>
+                            <p>{item.value}</p>
+                        </div>
+                    )}
                     {episodeCount !== 1 && <div className={'grid grid-cols-2 gap-5'}>
                         <h2>Finished:</h2>
                         <p>{endDate}</p>
@@ -70,12 +67,12 @@ const AnimePage: React.FC = () => {
                 </div>
             </div>
             {!isFavouriteId && <button onClick={() => addToFavourite(data.id)}
-                     className={'my-5 rounded-md p-3 bg-blue-500 hover:bg-blue-600 uppercase text-amber-50'}
+                                       className={'my-5 rounded-md p-3 bg-blue-500 hover:bg-blue-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 ADD TO FAVOURITE
             </button>}
             {isFavouriteId && <button onClick={removeFavourite}
-                className={'my-5 rounded-md p-3 bg-red-500 hover:bg-red-600 uppercase text-amber-50'}
+                                      className={'my-5 rounded-md p-3 bg-red-500 hover:bg-red-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 REMOVE
             </button>}
@@ -84,8 +81,8 @@ const AnimePage: React.FC = () => {
                 <p className={'mt-2'}>{description}</p>
             </div>
             <div>
-                <iframe src={`https://www.youtube.com/embed/${youtubeVideoId}`}  width="640"
-                        height="360" frameBorder="0" className={'mx-auto mt-8'}></iframe>
+                <iframe src={`https://www.youtube.com/embed/${youtubeVideoId}`} frameBorder="0"
+                        className={'mx-auto mt-8 w-[640px] h-[360px] max-[710px]:w-[540px] max-[710px]:h-[305px] max-[590px]:w-[370px] max-[590px]:h-[210px] max-[400px]:w-[300px] max-[400px]:h-[170px]'}></iframe>
             </div>
         </div>
     );

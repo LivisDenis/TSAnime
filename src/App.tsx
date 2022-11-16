@@ -21,7 +21,7 @@ const App = () => {
     return (
         <div>
             <Header/>
-            <main className={'max-w-[1020px] px-3 mx-auto my-11'}>
+            <main className={'max-w-[1020px] px-3 mx-auto my-11 max-[740px]:mt-5'}>
                 <Routes>
                     <Route path={HOME} element={<Home />} />
                     <Route path={ANIME_PAGE} element={<AnimePage />} />

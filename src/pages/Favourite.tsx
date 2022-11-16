@@ -11,7 +11,7 @@ const Favourite = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [favouriteData, setFavouriteData] = useState<AnimeType[]>()
     const {favourite} = useAppSelector(state => state.anime)
-    console.log(favourite)
+    console.log(favourite.length)
 
     useEffect(() => {
         axios.get(`https://kitsu.io/api/edge/anime?filter[id]=${favouriteStorageId}`)
@@ -23,7 +23,7 @@ const Favourite = () => {
         <div>
             <h1 className={'text-3xl'}>Favourite</h1>
             <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={isLoading} size={120} />
-            {favouriteData?.length! < 1 && <div className={'mt-[100px]'}>
+            {favourite.length < 2 && <div className={'mt-[100px]'}>
                 <h1 className={'text-4xl text-center'}>
                     You don't have any favorite anime
                 </h1>
@@ -31,7 +31,7 @@ const Favourite = () => {
                     Home
                 </Link>
             </div>}
-            <div className={'mt-10 grid grid-cols-4 gap-5'}>
+            <div className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
                 {favouriteData?.filter(item => favourite.includes(item.id))
                     .map(item =>
                     <Card favRemove={true} key={item.id} {...item}/>

@@ -18,15 +18,15 @@ const Card: React.FC<AnimeType> = (props) => {
                 <img src={posterImage?.large} alt="animeImg" width={260} height={280} className={'rounded-t-2xl'}/>
             </Link>
             <div className={'flex flex-col px-[8px] pb-[8px] mt-[10px] flex-auto'}>
-                <h4 className={'text-[18px] font-semibold flex-auto'}>{titles?.en || titles?.en_jp}</h4>
+                <h4 className={'text-[18px] max-[930px]:text-[15px] font-semibold flex-auto'}>{titles?.en || titles?.en_jp}</h4>
                 <hr className={'bg-black'}/>
                 <div className={'flex justify-between mt-[10px]'}>
-                    <p>Rating</p>
-                    <p>{averageRating}</p>
+                    <p className={'max-[930px]:text-[14px]'}>Rating</p>
+                    <p className={'max-[930px]:text-[14px]'}>{averageRating}</p>
                 </div>
                 <div className={'flex justify-between'}>
-                    <p>Date</p>
-                    <p>{startDate}</p>
+                    <p className={'max-[930px]:text-[14px]'}>Date</p>
+                    <p className={'max-[930px]:text-[14px]'}>{startDate}</p>
                 </div>
             </div>
             {props.favRemove && <button onClick={removeFavourite}

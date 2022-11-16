@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from "../redux/store";
 import {fetchAnime} from "../redux/anime/AsyncActions";
 import {PuffLoader} from "react-spinners";
 import {useDebounce} from "../hooks/useDebounce";
+import axios from "axios";
 
 const filters = [
     'Selected filter',
@@ -24,8 +25,8 @@ const Home = () => {
 
     useEffect(() => {
         const queryOffset = offset > 0 ? `&page[offset]=${offset}` : ''
-        const querySearch =  searchValue ? `&filter[text]=${searchValue}` : ''
-        const rating = filters.includes(selected) && selected !== filters[0] ? `&sort=-${selected}` : ''
+        const querySearch = searchValue ? `&filter[text]=${searchValue}` : ''
+        const rating = filters.includes(selected) && selected !== filters[0] ? `sort=-${selected}` : ''
 
         dispatch(fetchAnime({
             queryOffset,
@@ -42,8 +43,8 @@ const Home = () => {
                 <Search setSearchValue={setSearchValue} searchValue={searchValue}/>
                 <ListBox setSelected={setSelected} selected={selected} filters={filters}/>
             </div>
-            <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={status === 'loading'} size={120} />
-            <div className={'mt-10 grid grid-cols-4 gap-5'}>
+            <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={status === 'loading'} size={120}/>
+            <div className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
                 {data.map(item =>
                     <Card key={item.id} {...item}/>
                 )}
