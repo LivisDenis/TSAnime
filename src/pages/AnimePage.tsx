@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {AnimeType} from "../redux/anime/types";
@@ -6,13 +6,16 @@ import {PuffLoader} from "react-spinners";
 import {addFavourite} from "../redux/anime/slice";
 import {useAppDispatch, useAppSelector} from "../redux/store";
 import {deleteFavourite} from "../utils/deleteFavourite";
+import {LOGIN} from "../utils/consts";
 
 const AnimePage: React.FC = () => {
+    const navigate = useNavigate()
     const {slug} = useParams()
     const dispatch = useAppDispatch()
     const [data, setData] = useState<AnimeType | undefined>()
     const {favourite} = useAppSelector(state => state.anime)
     const isFavouriteId = favourite.join(',').split(',').find(id => id === data?.id)
+    const token = localStorage.getItem('token')
 
     console.log(data)
 
@@ -66,12 +69,12 @@ const AnimePage: React.FC = () => {
                     }
                 </div>
             </div>
-            {!isFavouriteId && <button onClick={() => addToFavourite(data.id)}
+            {!isFavouriteId && <button onClick={() => !token ? navigate(LOGIN) : addToFavourite(data.id)}
                                        className={'my-5 rounded-md p-3 bg-blue-500 hover:bg-blue-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 ADD TO FAVOURITE
             </button>}
-            {isFavouriteId && <button onClick={removeFavourite}
+            {isFavouriteId && token && <button onClick={removeFavourite}
                                       className={'my-5 rounded-md p-3 bg-red-500 hover:bg-red-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 REMOVE

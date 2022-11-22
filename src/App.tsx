@@ -1,5 +1,5 @@
 import Header from "./components/Header";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation} from "react-router-dom";
 import Home from "./pages/Home";
 import {ANIME_PAGE, FAVOURITE, HOME, LOGIN, PROFILE, REGISTER} from "./utils/consts";
 import AnimePage from "./pages/AnimePage";
@@ -12,7 +12,9 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 
 const App = () => {
+    useLocation()
     const dispatch = useAppDispatch()
+    const token = localStorage.getItem('token')
 
     useEffect(() => {
         const favStorage = localStorage.getItem('fv')?.slice(0, -1).slice(1).split(',')
@@ -32,10 +34,14 @@ const App = () => {
                 <Routes>
                     <Route path={HOME} element={<Home />} />
                     <Route path={ANIME_PAGE} element={<AnimePage />} />
-                    <Route path={FAVOURITE} element={<Favourite />} />
-                    <Route path={PROFILE} element={<Profile />} />
-                    <Route path={REGISTER} element={<Register />} />
-                    <Route path={LOGIN} element={<Login />} />
+                    {token && <>
+                        <Route path={FAVOURITE} element={<Favourite />} />
+                        <Route path={PROFILE} element={<Profile />} />
+                    </>}
+                    {!token && <>
+                        <Route path={REGISTER} element={<Register />} />
+                        <Route path={LOGIN} element={<Login />} />
+                    </>}
                     <Route path="*" element={<Navigate to={HOME} replace />}/>
                 </Routes>
             </main>
