@@ -1,3 +1,6 @@
 export const HOME = '/'
 export const ANIME_PAGE = '/anime/:slug'
 export const FAVOURITE = '/favourite'
+export const PROFILE = '/profile'
+export const LOGIN = '/login'
+export const REGISTER = '/register'

@@ -1,11 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 type SearchPropsType = {
     setSearchValue: React.Dispatch<React.SetStateAction<string>>
+    setOffset: React.Dispatch<React.SetStateAction<number>>
     searchValue: string
+    debounced: string
+    offset: number
 }
 
-const Search: React.FC<SearchPropsType> = ({setSearchValue, searchValue}) => {
+const Search: React.FC<SearchPropsType> = ({setSearchValue, searchValue, setOffset, debounced}) => {
+
+    useEffect(() => {
+        if (searchValue) {
+            setOffset(1)
+        }
+        // if (offset > 1 && !searchValue) {
+        //     setOffset(0)
+        // }
+    }, [debounced])
 
     return (
         <div className={'relative mr-7 max-[740px]:mr-4 max-[740px]:w-[50%]'}>

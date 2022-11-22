@@ -6,7 +6,6 @@ import {useAppDispatch, useAppSelector} from "../redux/store";
 import {fetchAnime} from "../redux/anime/AsyncActions";
 import {PuffLoader} from "react-spinners";
 import {useDebounce} from "../hooks/useDebounce";
-import axios from "axios";
 
 const filters = [
     'Selected filter',
@@ -15,13 +14,14 @@ const filters = [
     'startDate',
 ]
 
-const Home = () => {
+const Home: React.FC = () => {
     const dispatch = useAppDispatch()
     const {data, status} = useAppSelector(state => state.anime)
     const [searchValue, setSearchValue] = useState('')
     const [offset, setOffset] = useState(1)
     const [selected, setSelected] = useState(filters[0])
     const debounced = useDebounce(searchValue)
+    console.log(offset)
 
     useEffect(() => {
         const queryOffset = offset > 0 ? `&page[offset]=${offset}` : ''
@@ -40,11 +40,16 @@ const Home = () => {
             <h1 className={'text-3xl'}>Home</h1>
             <hr className={'bg-black'}/>
             <div className={'flex items-center mt-3'}>
-                <Search setSearchValue={setSearchValue} searchValue={searchValue}/>
+                <Search offset={offset}
+                        setOffset={setOffset}
+                        debounced={debounced}
+                        setSearchValue={setSearchValue}
+                        searchValue={searchValue}/>
                 <ListBox setSelected={setSelected} selected={selected} filters={filters}/>
             </div>
             <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={status === 'loading'} size={120}/>
-            <div className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
+            <div
+                className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
                 {data.map(item =>
                     <Card key={item.id} {...item}/>
                 )}
