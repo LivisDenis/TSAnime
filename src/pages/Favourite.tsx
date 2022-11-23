@@ -8,7 +8,7 @@ import Skeleton from "../components/Skeleton";
 import {apiUrl} from "../axios";
 
 const Favourite = () => {
-    const favouriteStorageId = localStorage.getItem('fv')?.slice(0, -1).slice(1)
+    const favouriteStorageId = localStorage.getItem('fv')?.slice(0, -1)
     const [isLoading, setIsLoading] = useState(true)
     const [favouriteData, setFavouriteData] = useState<AnimeType[]>()
     const {favourite} = useAppSelector(state => state.anime)
@@ -31,8 +31,8 @@ const Favourite = () => {
                 </Link>
             </div>}
             <div className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
-                {isLoading
-                    ? [...Array(8)].map((_, i) => <Skeleton key={i}/>)
+                {isLoading && favourite.length >= 1
+                    ? [...Array(favourite.length)].map((_, i) => <Skeleton key={i}/>)
                     : favouriteData?.filter(item => favourite.includes(item.id))
                         .map(item => <Card favRemove={true} key={item.id} {...item}/>)
                 }

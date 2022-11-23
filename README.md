@@ -1,1 +1,1 @@
-Link: https://anime-app-livisdenis.vercel.app/
+Link: https://anime-app-omega.vercel.app/
