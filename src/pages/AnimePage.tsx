@@ -7,6 +7,7 @@ import {addFavourite} from "../redux/anime/slice";
 import {useAppDispatch, useAppSelector} from "../redux/store";
 import {deleteFavourite} from "../utils/deleteFavourite";
 import {LOGIN} from "../utils/consts";
+import {apiUrl} from "../axios";
 
 const AnimePage: React.FC = () => {
     const navigate = useNavigate()
@@ -17,10 +18,8 @@ const AnimePage: React.FC = () => {
     const isFavouriteId = favourite.join(',').split(',').find(id => id === data?.id)
     const token = localStorage.getItem('token')
 
-    console.log(data)
-
     useEffect(() => {
-        axios.get(`https://kitsu.io/api/edge/anime?filter[slug]=${slug}`)
+        axios.get(`${apiUrl}?filter[slug]=${slug}`)
             .then(res => setData(res.data.data[0]))
     }, [])
 

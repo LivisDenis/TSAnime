@@ -13,9 +13,6 @@ export const animeSlice = createSlice({
     name: 'anime',
     initialState,
     reducers: {
-        // offsetCount(state, action: PayloadAction<number>) {
-        //     state.offset = state.data.find(item => Number(item.id) > 8) ? action.payload : ''
-        // },
         addFavourite(state, action: PayloadAction<string>) {
             state.favourite = [...state.favourite, action.payload]
         },

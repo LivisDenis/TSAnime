@@ -1,11 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import animeSlice from "./anime/slice";
+import userSlice from "./user/slice";
 
 
 const store = configureStore({
     reducer: {
-        anime: animeSlice
+        anime: animeSlice,
+        user: userSlice
     },
 })
 

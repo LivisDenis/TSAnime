@@ -2,8 +2,7 @@ import React from 'react';
 import {Link, Navigate} from "react-router-dom";
 import {HOME, REGISTER} from "../utils/consts";
 import {SubmitHandler, useForm} from "react-hook-form";
-import axios from "axios";
-import {baseUrl} from "../axios";
+import axios from "../axios";
 
 type Inputs = {
     email: string,
@@ -14,7 +13,7 @@ const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>({mode: "onChange"})
 
     const onSubmit: SubmitHandler<Inputs> = async (params) => {
-        const {data} = await axios.post(`${baseUrl}/auth/login`, params)
+        const {data} = await axios.post(`/auth/login`, params)
 
         if (!data) {
             alert('Не удалось авторизоваться')
@@ -23,9 +22,7 @@ const Login = () => {
         if ('token' in data) {
             localStorage.setItem('token', data.token)
         }
-        console.log(data)
     }
-    console.log(errors)
 
     if (localStorage.getItem('token')) {
         return <Navigate to={HOME}/>

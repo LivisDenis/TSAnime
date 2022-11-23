@@ -1,9 +1,8 @@
 import React from 'react';
 import {Link, Navigate} from "react-router-dom";
 import {HOME, LOGIN} from "../utils/consts";
-import axios from "axios";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {baseUrl} from "../axios";
+import axios from "../axios";
 
 type Inputs = {
     fullName: string,
@@ -15,7 +14,7 @@ const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({mode: "onChange"})
 
     const onSubmit: SubmitHandler<Inputs> = async (params) => {
-        const {data} = await axios.post(`${baseUrl}/auth/registration`, params)
+        const {data} = await axios.post(`/auth/registration`, params)
 
         if (!data) {
             alert('Не удалось зарегистрироваться')

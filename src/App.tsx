@@ -10,6 +10,7 @@ import {useAppDispatch} from "./redux/store";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import {fetchUser} from "./redux/user/AsyncActions";
 
 const App = () => {
     useLocation()
@@ -21,10 +22,11 @@ const App = () => {
         favStorage && favStorage.forEach(item =>
             dispatch(addFavourite(item))
         )
-        // if (localStorage.getItem('token')) {
-        //     axios.get('/auth/me')
-        //         .then(res => console.log(res.data))
-        // }
+        if (localStorage.getItem('token')) {
+            dispatch(fetchUser())
+            // axios.get('/auth/me')
+            //     .then(res => console.log(res))
+        }
     }, [])
 
     return (

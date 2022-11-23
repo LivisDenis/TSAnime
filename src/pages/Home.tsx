@@ -4,8 +4,8 @@ import ListBox from "../components/Listbox";
 import Card from "../components/Card";
 import {useAppDispatch, useAppSelector} from "../redux/store";
 import {fetchAnime} from "../redux/anime/AsyncActions";
-import {PuffLoader} from "react-spinners";
 import {useDebounce} from "../hooks/useDebounce";
+import Skeleton from "../components/Skeleton";
 
 const filters = [
     'Selected filter',
@@ -21,7 +21,6 @@ const Home: React.FC = () => {
     const [offset, setOffset] = useState(1)
     const [selected, setSelected] = useState(filters[0])
     const debounced = useDebounce(searchValue)
-    console.log(offset)
 
     useEffect(() => {
         const queryOffset = offset > 0 ? `&page[offset]=${offset}` : ''
@@ -47,12 +46,12 @@ const Home: React.FC = () => {
                         searchValue={searchValue}/>
                 <ListBox setSelected={setSelected} selected={selected} filters={filters}/>
             </div>
-            <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={status === 'loading'} size={120}/>
             <div
                 className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
-                {data.map(item =>
-                    <Card key={item.id} {...item}/>
-                )}
+                {status === 'loading'
+                    ? [...Array(8)].map((_, i) => <Skeleton key={i}/>)
+                    : data.map(item => <Card key={item.id} {...item}/>)
+                }
             </div>
             <div className={'flex justify-center'}>
                 <button onClick={() => setOffset(offset - 8)}
