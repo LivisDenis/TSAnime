@@ -1,7 +1,7 @@
 
 export type AnimeStateType = {
     data: AnimeType[]
-    favourite: string[]
+    favourite: AnimeType[]
     offset: number
     status: AnimeSliceEnum
 }
@@ -49,9 +49,11 @@ type AnimeCoverImageType = {
 
 
 export type AnimeType = {
+    _id?: string | undefined
     id: string
     attributes: AnimeAttributesType
     favRemove?: boolean
+    user?: {_id: string}
 }
 
 export type fetchParamsType = {

@@ -1,10 +1,23 @@
-import React from 'react';
-import {useAppSelector} from "../redux/store";
+import React, {useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from "../redux/store";
 import Dropdown from "../components/Dropdown";
+import {fetchUser} from "../redux/user/AsyncActions";
+import {useGetAnimeByUserQuery} from "../redux/anime/apiQuery";
 
 const Profile: React.FC = () => {
+    const dispatch = useAppDispatch()
     const {user} = useAppSelector(state => state.user)
-    const {favourite} = useAppSelector(state => state.anime)
+    const { data, refetch } = useGetAnimeByUserQuery()
+
+    useEffect(() => {
+        refetch()
+    }, [])
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            dispatch(fetchUser())
+        }
+    }, [])
 
     return (
         <div>
@@ -22,7 +35,7 @@ const Profile: React.FC = () => {
                     </p>
                     <p>
                         <span className={'font-medium'}>Your anime: </span>
-                        {favourite.length}
+                        {data?.length}
                     </p>
                     <p>
                         <span className={'font-medium'}>Created: </span>

@@ -1,39 +1,39 @@
 import {useNavigate, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {AnimeType} from "../redux/anime/types";
+import React from "react";
 import {PuffLoader} from "react-spinners";
-import {addFavourite} from "../redux/anime/slice";
-import {useAppDispatch, useAppSelector} from "../redux/store";
-import {deleteFavourite} from "../utils/deleteFavourite";
+import {addFavourite, removeFavourite} from "../redux/anime/slice";
+import {useAppDispatch} from "../redux/store";
 import {LOGIN} from "../utils/consts";
-import {apiUrl} from "../axios";
+import axios from "../axios";
+import {useGetAnimeByUserQuery, useGetOneAnimeQuery} from "../redux/anime/apiQuery";
 
 const AnimePage: React.FC = () => {
     const navigate = useNavigate()
     const {slug} = useParams()
     const dispatch = useAppDispatch()
-    const [data, setData] = useState<AnimeType | undefined>()
-    const {favourite} = useAppSelector(state => state.anime)
-    const isFavouriteId = favourite.join(',').split(',').find(id => id === data?.id)
     const token = localStorage.getItem('token')
 
-    useEffect(() => {
-        axios.get(`${apiUrl}?filter[slug]=${slug}`)
-            .then(res => setData(res.data.data[0]))
-    }, [])
+    const {data, isLoading} = useGetOneAnimeQuery(slug!)
+    const {data: favourite} = useGetAnimeByUserQuery()
 
-    const addToFavourite = (id: string) => {
-        dispatch(addFavourite(id))
-        localStorage.setItem('fv', (localStorage.getItem('fv') || '') + `${id},`)
+    const isRemove = favourite?.filter(item => item.id === data?.id)
+
+    const addToFavourite = async () => {
+        if (!token) navigate(LOGIN)
+
+        dispatch(addFavourite(data!))
+        await axios.post('/favourite/save', data)
+
     }
 
     if (!data) {
-        return <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={!data} size={120}/>
+        return <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={isLoading} size={120}/>
     }
 
-    const removeFavourite = () => {
-        deleteFavourite(data.id, dispatch)
+    const deleteFavourite = async () => {
+        // deleteFavourite(data.id, dispatch)
+        dispatch(removeFavourite(isRemove![0]._id!))
+        await axios.post(`/favourite/remove/${isRemove![0]._id}`)
     }
 
     const {
@@ -68,12 +68,12 @@ const AnimePage: React.FC = () => {
                     }
                 </div>
             </div>
-            {!isFavouriteId && <button onClick={() => !token ? navigate(LOGIN) : addToFavourite(data.id)}
+            {!isRemove![0] && <button onClick={addToFavourite}
                                        className={'my-5 rounded-md p-3 bg-blue-500 hover:bg-blue-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 ADD TO FAVOURITE
             </button>}
-            {isFavouriteId && token && <button onClick={removeFavourite}
+            {isRemove![0] && <button onClick={deleteFavourite}
                                       className={'my-5 rounded-md p-3 bg-red-500 hover:bg-red-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 REMOVE

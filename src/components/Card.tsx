@@ -1,15 +1,15 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {AnimeType} from "../redux/anime/types";
-import {useAppDispatch} from "../redux/store";
-import {deleteFavourite} from "../utils/deleteFavourite";
+import {useRemoveFavouriteMutation} from "../redux/anime/apiQuery";
 
 const Card: React.FC<AnimeType> = (props) => {
     const {titles, averageRating, posterImage, startDate, slug} = props?.attributes
-    const dispatch = useAppDispatch()
+    const [deleteFavourite, result] = useRemoveFavouriteMutation()
 
     const removeFavourite = () => {
-        deleteFavourite(props.id, dispatch)
+        deleteFavourite(props._id!)
+        console.log(result)
     }
 
     return (

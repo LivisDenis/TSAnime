@@ -5,7 +5,6 @@ import {ANIME_PAGE, FAVOURITE, HOME, LOGIN, PROFILE, REGISTER} from "./utils/con
 import AnimePage from "./pages/AnimePage";
 import Favourite from "./pages/Favourite";
 import {useEffect} from "react";
-import {addFavourite} from "./redux/anime/slice";
 import {useAppDispatch} from "./redux/store";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
@@ -18,10 +17,6 @@ const App = () => {
     const token = localStorage.getItem('token')
 
     useEffect(() => {
-        const favStorage = localStorage.getItem('fv')?.slice(0, -1).split(',')
-        favStorage && favStorage.forEach(item =>
-            dispatch(addFavourite(item))
-        )
         if (localStorage.getItem('token')) {
             dispatch(fetchUser())
             // axios.get('/auth/me')

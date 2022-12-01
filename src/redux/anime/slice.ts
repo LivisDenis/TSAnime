@@ -1,6 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchAnime} from "./AsyncActions";
-import {AnimeSliceEnum, AnimeStateType} from "./types";
+import {AnimeSliceEnum, AnimeStateType, AnimeType} from "./types";
 
 const initialState: AnimeStateType = {
     data: [],
@@ -13,25 +12,12 @@ export const animeSlice = createSlice({
     name: 'anime',
     initialState,
     reducers: {
-        addFavourite(state, action: PayloadAction<string>) {
+        addFavourite(state, action: PayloadAction<AnimeType>) {
             state.favourite = [...state.favourite, action.payload]
         },
         removeFavourite(state, action: PayloadAction<string>) {
-            state.favourite = state.favourite.join(',').split(',').filter(id => id !== action.payload)
+            state.favourite = state.favourite.filter(item => item._id !== action.payload)
         },
-    },
-    extraReducers: builder => {
-        builder.addCase(fetchAnime.pending, (state: AnimeStateType) => {
-            state.status = AnimeSliceEnum.LOADING
-            state.data = []
-        })
-        builder.addCase(fetchAnime.fulfilled, (state: AnimeStateType, action: PayloadAction<any[]>) => {
-            state.status = AnimeSliceEnum.SUCCESS
-            state.data = [...state.data, ...action.payload]
-        })
-        builder.addCase(fetchAnime.rejected, (state: AnimeStateType) => {
-            state.status = AnimeSliceEnum.ERROR
-        })
     }
 })
 
