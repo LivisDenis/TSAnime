@@ -3,7 +3,7 @@ import Search from "../components/Search";
 import ListBox from "../components/Listbox";
 import Card from "../components/Card";
 import {useDebounce} from "../hooks/useDebounce";
-import Skeleton from "../components/Skeleton";
+import {CardSkeleton} from "../components/Skeleton";
 import {useGetAnimeQuery} from "../redux/anime/apiQuery";
 
 const filters = [
@@ -44,7 +44,7 @@ const Home: React.FC = () => {
             <div
                 className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
                 {isLoading
-                    ? [...Array(8)].map((_, i) => <Skeleton key={i}/>)
+                    ? [...Array(8)].map((_, i) => <CardSkeleton key={i}/>)
                     : data?.map(item => <Card key={item.id} {...item}/>)
                 }
             </div>

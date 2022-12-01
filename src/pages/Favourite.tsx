@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import Card from "../components/Card";
 import {Link} from "react-router-dom";
-import Skeleton from "../components/Skeleton";
 import {HOME} from "../utils/consts";
 import {useGetAnimeByUserQuery} from "../redux/anime/apiQuery";
+import {CardSkeleton} from "../components/Skeleton";
 
 const Favourite: React.FC = () => {
     const { data, error, isLoading, refetch } = useGetAnimeByUserQuery()
@@ -28,7 +28,7 @@ const Favourite: React.FC = () => {
             </div>}
             <div className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
                 {isLoading
-                    ? [...Array(4)].map((_, i) => <Skeleton key={i}/>)
+                    ? [...Array(4)].map((_, i) => <CardSkeleton key={i}/>)
                     : data?.map(item => <Card favRemove={true} key={item.id} {...item}/>)
                 }
             </div>

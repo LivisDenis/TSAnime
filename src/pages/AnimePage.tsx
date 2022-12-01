@@ -1,11 +1,11 @@
-import {useNavigate, useParams} from "react-router-dom";
 import React from "react";
-import {PuffLoader} from "react-spinners";
+import {useNavigate, useParams} from "react-router-dom";
 import {addFavourite, removeFavourite} from "../redux/anime/slice";
 import {useAppDispatch} from "../redux/store";
 import {LOGIN} from "../utils/consts";
 import axios from "../axios";
 import {useGetAnimeByUserQuery, useGetOneAnimeQuery} from "../redux/anime/apiQuery";
+import PageSkeleton from "../components/PageSkeleton";
 
 const AnimePage: React.FC = () => {
     const navigate = useNavigate()
@@ -13,7 +13,7 @@ const AnimePage: React.FC = () => {
     const dispatch = useAppDispatch()
     const token = localStorage.getItem('token')
 
-    const {data, isLoading} = useGetOneAnimeQuery(slug!)
+    const {data} = useGetOneAnimeQuery(slug!)
     const {data: favourite} = useGetAnimeByUserQuery()
 
     const isRemove = favourite?.filter(item => item.id === data?.id)
@@ -23,15 +23,13 @@ const AnimePage: React.FC = () => {
 
         dispatch(addFavourite(data!))
         await axios.post('/favourite/save', data)
-
     }
 
     if (!data) {
-        return <PuffLoader color="rgb(239 68 68)" className={'mx-auto mt-12'} loading={isLoading} size={120}/>
+        return <PageSkeleton/>
     }
 
     const deleteFavourite = async () => {
-        // deleteFavourite(data.id, dispatch)
         dispatch(removeFavourite(isRemove![0]._id!))
         await axios.post(`/favourite/remove/${isRemove![0]._id}`)
     }
@@ -39,7 +37,7 @@ const AnimePage: React.FC = () => {
     const {
         averageRating, posterImage, startDate, ageRatingGuide, endDate,
         titles, description, youtubeVideoId, episodeCount
-    } = data.attributes
+    } = data?.attributes
 
     const info = [
         {name: 'Rating:', value: averageRating},
@@ -61,19 +59,19 @@ const AnimePage: React.FC = () => {
                             <p>{item.value}</p>
                         </div>
                     )}
-                    {episodeCount !== 1 && <div className={'grid grid-cols-2 gap-5'}>
+                    {episodeCount !== 1 && <div className={'grid grid-cols-2 gap-5 py-1'}>
                         <h2>Finished:</h2>
                         <p>{endDate}</p>
                     </div>
                     }
                 </div>
             </div>
-            {!isRemove![0] && <button onClick={addToFavourite}
+            {<button onClick={addToFavourite}
                                        className={'my-5 rounded-md p-3 bg-blue-500 hover:bg-blue-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 ADD TO FAVOURITE
             </button>}
-            {isRemove![0] && <button onClick={deleteFavourite}
+            {<button onClick={deleteFavourite}
                                       className={'my-5 rounded-md p-3 bg-red-500 hover:bg-red-600 uppercase text-amber-50 max-[590px]:w-full'}
             >
                 REMOVE
