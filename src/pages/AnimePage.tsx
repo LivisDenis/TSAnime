@@ -1,16 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {addFavourite, removeFavourite} from "../redux/anime/slice";
-import {useAppDispatch} from "../redux/store";
-import {LOGIN} from "../utils/consts";
 import axios from "../axios";
 import {useGetAnimeByUserQuery, useGetOneAnimeQuery} from "../redux/anime/apiQuery";
 import PageSkeleton from "../components/PageSkeleton";
+import Button from "../components/Button";
+import {LOGIN} from "../utils/consts";
 
 const AnimePage: React.FC = () => {
-    const navigate = useNavigate()
     const {slug} = useParams()
-    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const [changeBtn, setChangeBtn] = useState(true)
     const token = localStorage.getItem('token')
 
     const {data} = useGetOneAnimeQuery(slug!)
@@ -18,20 +17,17 @@ const AnimePage: React.FC = () => {
 
     const isRemove = favourite?.filter(item => item.id === data?.id)
 
-    const addToFavourite = async () => {
-        if (!token) navigate(LOGIN)
-
-        dispatch(addFavourite(data!))
-        await axios.post('/favourite/save', data)
-    }
-
     if (!data) {
         return <PageSkeleton/>
     }
 
-    const deleteFavourite = async () => {
-        dispatch(removeFavourite(isRemove![0]._id!))
-        await axios.post(`/favourite/remove/${isRemove![0]._id}`)
+    const handleClick = async () => {
+        if (!token) return navigate(LOGIN)
+
+        setChangeBtn(!changeBtn)
+        isRemove?.length! > 0
+            ? await axios.post(`/favourite/remove/${isRemove![0]._id}`)
+            : await axios.post('/favourite/save', data)
     }
 
     const {
@@ -66,16 +62,7 @@ const AnimePage: React.FC = () => {
                     }
                 </div>
             </div>
-            {<button onClick={addToFavourite}
-                                       className={'my-5 rounded-md p-3 bg-blue-500 hover:bg-blue-600 uppercase text-amber-50 max-[590px]:w-full'}
-            >
-                ADD TO FAVOURITE
-            </button>}
-            {<button onClick={deleteFavourite}
-                                      className={'my-5 rounded-md p-3 bg-red-500 hover:bg-red-600 uppercase text-amber-50 max-[590px]:w-full'}
-            >
-                REMOVE
-            </button>}
+            <Button changeBtn={changeBtn} handleClick={handleClick}/>
             <div>
                 <h3 className={'text-2xl'}>About «{titles.en || titles.en_jp}»:</h3>
                 <p className={'mt-2'}>{description}</p>
