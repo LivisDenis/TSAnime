@@ -6,6 +6,7 @@ import {useDebounce} from "../hooks/useDebounce";
 import {CardSkeleton} from "../components/Skeleton";
 import {useGetAnimeQuery} from "../redux/anime/apiQuery";
 import {useLocation, useNavigate} from "react-router-dom";
+import {SearchAnimeParams} from "../redux/anime/types";
 import qs from 'qs';
 
 const filters = [
@@ -24,10 +25,6 @@ const Home: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    // Parsing query params
-    const queryParamPage = location.search && location.search.split('&')[0].split('=')[1]
-    const queryParamFilter = location.search && location.search.split('&')[1].split('=')[1]
-
     // Requests for api
     const queryOffset = offset > 0 ? `&page[offset]=${offset}` : ''
     const querySearch = debounced ? `&filter[text]=${debounced}` : ''
@@ -41,32 +38,35 @@ const Home: React.FC = () => {
 
     // If the parameters were changed and there was a first render
     useEffect(() => {
+        const search = searchValue?.length > 1 ? searchValue : null
+
         const params = {
             page: page,
-            filter: selected !== filters[0] ? selected : 'default'
-        };
+            filter: selected !== filters[0] ? selected : 'default',
+            search
+        }
 
         const queryString = qs.stringify(params, {skipNulls: true});
 
         navigate(`/?${queryString}`);
-    }, [offset, selected])
+    }, [offset, selected, debounced])
 
     // Parsing parameters on first render
     useEffect(() => {
-        if (window.location.search) {
-            if (Number(queryParamPage) === 1) {
-                setOffset(1)
-            }
-            if (Number(queryParamPage) === 2) {
+        if (location.search) {
+            const params = qs.parse(location.search.substring(1)) as unknown as SearchAnimeParams
+            console.log(params);
+            if (params.page === 2) {
                 setOffset(9)
             }
-            if (Number(queryParamPage) > 2) {
-                setOffset((Number(queryParamPage) * 8 + 1) - 8)
+            if (params.page > 2) {
+                setOffset((params.page * 8 + 1) - 8)
             }
-            if (queryParamFilter !== filters[0]) {
-                setSelected(queryParamFilter)
+            if (params.filter !== 'default') {
+                setSelected(params.filter)
             }
-            setPage(Number(queryParamPage))
+            setPage(Number(params.page))
+            setSearchValue(params.search ?? '')
         }
     }, []);
 
@@ -91,6 +91,7 @@ const Home: React.FC = () => {
             <div className={'flex items-center mt-3'}>
                 <Search offset={offset}
                         setOffset={setOffset}
+                        setPage={setPage}
                         debounced={debounced}
                         setSearchValue={setSearchValue}
                         searchValue={searchValue}/>

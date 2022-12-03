@@ -7,19 +7,24 @@ type ButtonProps = {
     changeBtn: boolean
     isRemove: AnimeType[] | undefined
     loading: boolean
+    token?: string
 }
 
-const Button: React.FC<ButtonProps> = ({handleClick, changeBtn, isRemove, loading}) => {
+const Button: React.FC<ButtonProps> = ({handleClick, changeBtn, isRemove, loading, token}) => {
+    const checkFavouriteArr = isRemove?.length === 0 && changeBtn ? 'ADD TO FAVOURITE' : 'REMOVE'
+    const checkLoadingAndDisplay = !loading && checkFavouriteArr
+
+    const colorBtn = isRemove?.length === 0 && changeBtn || !token ? 'bg-blue-500 hover:bg-blue-600' : 'bg-red-500 hover:bg-red-600'
 
     return (
         <button onClick={handleClick}
                 disabled={loading}
-                className={`relative h-[48px] min-w-[172px] my-5 rounded-md p-3 ${isRemove?.length === 0 && changeBtn ? 'bg-blue-500 hover:bg-blue-600' : 'bg-red-500 hover:bg-red-600'} uppercase text-amber-50 max-[590px]:w-full`}
+                className={`relative h-[48px] min-w-[172px] my-5 rounded-md p-3 ${colorBtn} uppercase text-amber-50 max-[590px]:w-full`}
         >
             <span className={'absolute left-[46%] top-[50%] translate-x-0 translate-y-[-50%]'}>
                 <PuffLoader loading={loading} size={20} />
             </span>
-            {!loading && (isRemove?.length === 0 && changeBtn ? 'ADD TO FAVOURITE' : 'REMOVE')}
+            {!token ? 'ADD TO FAVOURITE' : checkLoadingAndDisplay}
         </button>
     );
 };

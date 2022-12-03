@@ -3,16 +3,18 @@ import React, {useEffect} from 'react';
 type SearchPropsType = {
     setSearchValue: React.Dispatch<React.SetStateAction<string>>
     setOffset: React.Dispatch<React.SetStateAction<number>>
+    setPage: React.Dispatch<React.SetStateAction<number>>
     searchValue: string
     debounced: string
     offset: number
 }
 
-const Search: React.FC<SearchPropsType> = ({setSearchValue, searchValue, setOffset, debounced}) => {
+const Search: React.FC<SearchPropsType> = ({setSearchValue, searchValue, setOffset, debounced, setPage}) => {
 
     useEffect(() => {
         if (searchValue) {
             setOffset(1)
+            setPage(1)
         }
         // if (offset > 1 && !searchValue) {
         //     setOffset(0)

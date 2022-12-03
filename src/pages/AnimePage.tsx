@@ -68,7 +68,11 @@ const AnimePage: React.FC = () => {
                     }
                 </div>
             </div>
-            <Button changeBtn={changeBtn} loading={saveLoading} handleClick={handleClick} isRemove={isRemove}/>
+            <Button changeBtn={changeBtn}
+                    loading={saveLoading}
+                    handleClick={handleClick}
+                    isRemove={isRemove}
+                    token={token}/>
             <div>
                 <h3 className={'text-2xl'}>About «{titles.en || titles.en_jp}»:</h3>
                 <p className={'mt-2'}>{description}</p>

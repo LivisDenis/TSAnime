@@ -5,7 +5,7 @@ import {apiUrl} from "../../axios";
 export const animeApi = createApi({
     reducerPath: 'animeApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_BACKEND_URL,
+        baseUrl: import.meta.env.VITE_APP_BACKEND_URL,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token')
             if (token) {

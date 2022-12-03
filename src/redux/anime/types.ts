@@ -54,3 +54,9 @@ export type fetchParamsType = {
     querySearch: string
     rating: string
 }
+
+export type SearchAnimeParams = {
+    page: number
+    filter: string
+    search: string
+}
