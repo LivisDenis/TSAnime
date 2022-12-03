@@ -1,11 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AnimeSliceEnum, AnimeStateType, AnimeType} from "./types";
+import {AnimeStateType, AnimeType} from "./types";
 
 const initialState: AnimeStateType = {
     data: [],
     favourite: [],
     offset: 0,
-    status: AnimeSliceEnum.LOADING
 }
 
 export const animeSlice = createSlice({

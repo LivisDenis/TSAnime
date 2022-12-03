@@ -2,18 +2,19 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {AnimeType} from "../redux/anime/types";
 import {useRemoveFavouriteMutation} from "../redux/anime/apiQuery";
+import {PuffLoader} from "react-spinners";
 
 const Card: React.FC<AnimeType> = (props) => {
     const {titles, averageRating, posterImage, startDate, slug} = props?.attributes
-    const [deleteFavourite, result] = useRemoveFavouriteMutation()
+    const [deleteFavourite, {isLoading}] = useRemoveFavouriteMutation()
 
     const removeFavourite = () => {
         deleteFavourite(props._id!)
-        console.log(result)
     }
 
     return (
-        <div className={'relative max-w-max h-full border border-neutral-400 flex flex-col rounded-2xl bg-blue-100 drop-shadow-xl'}>
+        <div
+            className={'relative max-w-max h-full border border-neutral-400 flex flex-col rounded-2xl bg-blue-100 drop-shadow-xl'}>
             <Link to={`/anime/${slug}`}>
                 <img src={posterImage?.large} alt="animeImg" width={260} height={280} className={'rounded-t-2xl'}/>
             </Link>
@@ -30,8 +31,12 @@ const Card: React.FC<AnimeType> = (props) => {
                 </div>
             </div>
             {props.favRemove && <button onClick={removeFavourite}
-                                        className={'absolute top-[5px] right-[5px] rounded-md p-2 bg-blue-500 hover:bg-red-600 uppercase text-amber-50'}>
-                REMOVE
+                                        disabled={isLoading}
+                                        className={'absolute h-[40px] w-[81px] top-[5px] right-[5px] rounded-md p-2 bg-blue-500 hover:bg-red-600 uppercase text-amber-50'}>
+                {isLoading ? '' : 'REMOVE'}
+                <span className={'absolute left-[37%] top-[50%] translate-x-0 translate-y-[-50%]'}>
+                    <PuffLoader loading={isLoading} size={20}/>
+                </span>
             </button>}
         </div>
     );

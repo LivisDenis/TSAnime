@@ -1,27 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, Navigate} from "react-router-dom";
 import {HOME, REGISTER} from "../utils/consts";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "../axios";
+import {UserType} from "../redux/user/slice";
+import {PuffLoader} from "react-spinners";
 
 type Inputs = {
     email: string,
     password: string,
 };
 
-const Login = () => {
+const Login: React.FC = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>({mode: "onChange"})
+    const [isLoading, setIsLoading] = useState(false)
 
     const onSubmit: SubmitHandler<Inputs> = async (params) => {
-        const {data} = await axios.post(`/auth/login`, params)
+        setIsLoading(true)
+        const {data} = await axios.post<UserType>(`/auth/login`, params)
 
         if (!data) {
             alert('Не удалось авторизоваться')
         }
 
         if ('token' in data) {
-            localStorage.setItem('token', data.token)
+            localStorage.setItem('token', data.token!)
         }
+        setIsLoading(false)
     }
 
     if (localStorage.getItem('token')) {
@@ -29,7 +34,7 @@ const Login = () => {
     }
 
     return (
-        <div className={'w-[400px] rounded-3xl p-4 bg-gray-300 mx-auto mt-[150px]'}>
+        <div className={'w-[400px] rounded-3xl p-4 bg-gray-300 mx-auto mt-[150px] max-[500px]:w-full max-[500px]:mt-[50px]'}>
             <h1 className={'text-center text-[32px]'}>Login</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={'grid grid-rows-2 gap-6 mt-3'}>
@@ -66,8 +71,14 @@ const Login = () => {
                         <Link className={'text-blue-600'} to={REGISTER}> Register</Link>
                     </p>
                     <button
-                        className={'block text-[16px] rounded-md py-[10px] px-[12px] bg-red-500 hover:bg-red-600 uppercase text-amber-50'}>
-                        Login
+                        disabled={isLoading}
+                        className={'relative block h-[44px] w-[72px] text-[16px] rounded-md py-[10px] px-[12px] bg-red-500 hover:bg-red-600 uppercase text-amber-50'}>
+
+                        {isLoading ? '' : 'Login'}
+
+                        <span className={'absolute left-[37%] top-[50%] translate-x-0 translate-y-[-50%]'}>
+                            <PuffLoader loading={isLoading} size={20}/>
+                        </span>
                     </button>
                 </div>
             </form>

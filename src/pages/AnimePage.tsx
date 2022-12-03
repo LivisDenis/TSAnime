@@ -10,10 +10,11 @@ const AnimePage: React.FC = () => {
     const {slug} = useParams()
     const navigate = useNavigate()
     const [changeBtn, setChangeBtn] = useState(true)
+    const [saveLoading, setSaveLoading] = useState(false)
     const token = localStorage.getItem('token')
 
     const {data} = useGetOneAnimeQuery(slug!)
-    const {data: favourite} = useGetAnimeByUserQuery()
+    const {data: favourite, refetch} = useGetAnimeByUserQuery()
 
     const isRemove = favourite?.filter(item => item.id === data?.id)
 
@@ -22,12 +23,17 @@ const AnimePage: React.FC = () => {
     }
 
     const handleClick = async () => {
+        setSaveLoading(true)
         if (!token) return navigate(LOGIN)
 
-        setChangeBtn(!changeBtn)
+        refetch()
         isRemove?.length! > 0
             ? await axios.post(`/favourite/remove/${isRemove![0]._id}`)
+                .then(() => setSaveLoading(false))
+                .then(() => setChangeBtn(!changeBtn))
             : await axios.post('/favourite/save', data)
+                .then(() => setSaveLoading(false))
+                .then(() => setChangeBtn(!changeBtn))
     }
 
     const {
@@ -62,7 +68,7 @@ const AnimePage: React.FC = () => {
                     }
                 </div>
             </div>
-            <Button changeBtn={changeBtn} handleClick={handleClick}/>
+            <Button changeBtn={changeBtn} loading={saveLoading} handleClick={handleClick} isRemove={isRemove}/>
             <div>
                 <h3 className={'text-2xl'}>About «{titles.en || titles.en_jp}»:</h3>
                 <p className={'mt-2'}>{description}</p>

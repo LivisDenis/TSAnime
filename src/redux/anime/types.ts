@@ -3,13 +3,6 @@ export type AnimeStateType = {
     data: AnimeType[]
     favourite: AnimeType[]
     offset: number
-    status: AnimeSliceEnum
-}
-
-export enum AnimeSliceEnum {
-    LOADING = 'loading',
-    SUCCESS = 'success',
-    ERROR = 'error',
 }
 
 export type AnimeAttributesType = {

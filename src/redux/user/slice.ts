@@ -1,11 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchUser} from "./AsyncActions";
 
-type UserType = {
+export type UserType = {
     _id: string
     email: string
     fullName: string
     createdAt: string
+    token?: string | undefined
 }
 
 type UserStateType = {
