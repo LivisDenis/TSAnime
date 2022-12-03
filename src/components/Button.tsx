@@ -7,7 +7,7 @@ type ButtonProps = {
     changeBtn: boolean
     isRemove: AnimeType[] | undefined
     loading: boolean
-    token?: string
+    token?: string | null
 }
 
 const Button: React.FC<ButtonProps> = ({handleClick, changeBtn, isRemove, loading, token}) => {
