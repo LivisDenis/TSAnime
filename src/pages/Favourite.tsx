@@ -8,6 +8,8 @@ import {CardSkeleton} from "../components/Skeleton";
 const Favourite: React.FC = () => {
     const { data, error, isLoading, refetch } = useGetAnimeByUserQuery()
 
+    // const favourite = data?.filter((el, ind) => ind === data.indexOf(el));
+
     useEffect(() => {
         refetch()
     }, [])

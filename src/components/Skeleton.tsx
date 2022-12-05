@@ -4,8 +4,8 @@ import ContentLoader from "react-content-loader"
 const CardSkeleton = (props: any) => (
     <ContentLoader
         speed={2}
-        width={232}
-        height={463}
+        max-width={232}
+        max-height={463}
         viewBox="0 0 232 463"
         backgroundColor="#bababa"
         foregroundColor="#ffffff"
@@ -24,7 +24,7 @@ const ImgSkeleton = (props: any) => (
     <ContentLoader
         speed={2}
         width={280}
-        height={397}
+        max-height={397}
         viewBox="0 0 280 397"
         backgroundColor="#bababa"
         foregroundColor="#ffffff"
@@ -55,21 +55,21 @@ const TitleSkeleton = (props: any) => (
 const TableSkeleton = (props: any) => (
     <ContentLoader
         speed={2}
-        width={400}
-        height={160}
+        max-width={400}
+        max-height={160}
         viewBox="0 0 400 160"
         backgroundColor="#bababa"
         foregroundColor="#ffffff"
         {...props}
     >
-        <rect x="0" y="0" rx="0" ry="0" width="400" height="400" />
+        <rect x="0" y="0" rx="0" ry="0" width="400" height="400" {...props} />
     </ContentLoader>
 )
 const DescSkeleton = (props: any) => (
     <ContentLoader
         speed={2}
-        width={996}
-        height={140}
+        max-width={996}
+        max-height={140}
         viewBox="0 0 996 140"
         backgroundColor="#bababa"
         foregroundColor="#ffffff"

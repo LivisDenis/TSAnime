@@ -55,7 +55,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         if (location.search) {
             const params = qs.parse(location.search.substring(1)) as unknown as SearchAnimeParams
-            console.log(params);
+
             if (params.page === 2) {
                 setOffset(9)
             }
@@ -100,6 +100,7 @@ const Home: React.FC = () => {
             <div
                 className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
                 {isFetching ? skeletons : anime}
+                {/*{skeletons}*/}
             </div>
             <div className={'flex justify-center'}>
                 <button onClick={onPageMinus}
