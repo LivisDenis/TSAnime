@@ -3,8 +3,8 @@ import {Link, Navigate} from "react-router-dom";
 import {HOME, REGISTER} from "../utils/consts";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "../axios";
-import {UserType} from "../redux/user/slice";
 import {PuffLoader} from "react-spinners";
+import {UserType} from "../redux/anime/apiQuery";
 
 type Inputs = {
     email: string,

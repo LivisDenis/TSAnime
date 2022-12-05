@@ -11,7 +11,7 @@ const PageSkeleton = () => {
                 <div className={'flex items-start max-[670px]:max-w-[250px] max-[590px]:mx-auto'}>
                     <ImgSkeleton />
                 </div>
-                <div className={'flex items-start max-w-[400px] w-full max-[590px]:mx-auto max-[590px]:max-w-full'}>
+                <div className={'flex items-start max-w-[400px] w-full mt-5 max-[590px]:mx-auto max-[590px]:max-w-full'}>
                     <TableSkeleton className={'flex items-start max-w-[400px] w-full max-[590px]:mx-auto max-[590px]:max-w-full'} />
                 </div>
             </div>

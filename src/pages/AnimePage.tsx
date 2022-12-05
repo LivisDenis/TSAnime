@@ -26,14 +26,16 @@ const AnimePage: React.FC = () => {
         setSaveLoading(true)
         if (!token) return navigate(LOGIN)
 
-        refetch()
         isRemove?.length! > 0
             ? await axios.post(`/favourite/remove/${isRemove![0]._id}`)
                 .then(() => setSaveLoading(false))
                 .then(() => setChangeBtn(!changeBtn))
+                .then(() => refetch())
+
             : await axios.post('/favourite/save', data)
                 .then(() => setSaveLoading(false))
                 .then(() => setChangeBtn(!changeBtn))
+                .then(() => refetch())
     }
 
     const {

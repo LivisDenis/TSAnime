@@ -38,6 +38,7 @@ const Home: React.FC = () => {
 
     // If the parameters were changed and there was a first render
     useEffect(() => {
+        window.scrollTo(0, 0);
         const search = searchValue?.length > 1 ? searchValue : null
 
         const params = {
@@ -100,7 +101,6 @@ const Home: React.FC = () => {
             <div
                 className={'mt-10 grid grid-cols-4 gap-5 max-[740px]:gap-3 max-[580px]:mt-5 max-[830px]:grid-cols-3 max-[490px]:grid-cols-2'}>
                 {isFetching ? skeletons : anime}
-                {/*{skeletons}*/}
             </div>
             <div className={'flex justify-center'}>
                 <button onClick={onPageMinus}

@@ -2,6 +2,14 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {AnimeType, fetchParamsType} from "./types";
 import {apiUrl} from "../../axios";
 
+export type UserType = {
+    _id: string
+    email: string
+    fullName: string
+    createdAt: string
+    token?: string | undefined
+}
+
 export const animeApi = createApi({
     reducerPath: 'animeApi',
     baseQuery: fetchBaseQuery({
@@ -37,7 +45,10 @@ export const animeApi = createApi({
             }),
             invalidatesTags: ['Favourite']
         }),
+        getUser: builder.query<UserType, void>({
+            query: () => `/auth/me`,
+        }),
     }),
 })
 
-export const { useGetAnimeByUserQuery, useRemoveFavouriteMutation, useGetAnimeQuery, useGetOneAnimeQuery } = animeApi
+export const { useGetAnimeByUserQuery, useRemoveFavouriteMutation, useGetAnimeQuery, useGetOneAnimeQuery, useGetUserQuery } = animeApi

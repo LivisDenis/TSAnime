@@ -4,7 +4,7 @@ import {HOME, LOGIN} from "../utils/consts";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "../axios";
 import {PuffLoader} from "react-spinners";
-import {UserType} from "../redux/user/slice";
+import {UserType} from "../redux/anime/apiQuery";
 
 type Inputs = {
     fullName: string,

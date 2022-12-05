@@ -5,22 +5,19 @@ import {ANIME_PAGE, FAVOURITE, HOME, LOGIN, PROFILE, REGISTER} from "./utils/con
 import AnimePage from "./pages/AnimePage";
 import Favourite from "./pages/Favourite";
 import {useEffect} from "react";
-import {useAppDispatch} from "./redux/store";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import {fetchUser} from "./redux/user/AsyncActions";
+import {useGetUserQuery} from "./redux/anime/apiQuery";
 
 const App = () => {
     useLocation()
-    const dispatch = useAppDispatch()
     const token = localStorage.getItem('token')
+    const {refetch} = useGetUserQuery()
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-            dispatch(fetchUser())
-            // axios.get('/auth/me')
-            //     .then(res => console.log(res))
+            refetch()
         }
     }, [])
 

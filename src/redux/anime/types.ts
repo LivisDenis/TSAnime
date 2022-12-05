@@ -1,10 +1,4 @@
 
-export type AnimeStateType = {
-    data: AnimeType[]
-    favourite: AnimeType[]
-    offset: number
-}
-
 export type AnimeAttributesType = {
     ageRatingGuide: string
     averageRating: string
@@ -39,7 +33,6 @@ type AnimeCoverImageType = {
     small: string
     tiny: string
 }
-
 
 export type AnimeType = {
     _id?: string | undefined
