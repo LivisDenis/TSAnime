@@ -9,18 +9,26 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {SearchAnimeParams} from "../redux/anime/types";
 import qs from 'qs';
 
-const filters = [
-    'Selected filter',
-    'averageRating',
-    'episodeCount',
-    'startDate',
+export type FiltersType = {
+    name: string
+    filterProperty: string
+}
+
+const filters: FiltersType[] = [
+    {name: 'Default', filterProperty: 'Selected filter'},
+    {name: 'Rating', filterProperty: 'averageRating'},
+    {name: '-Rating', filterProperty: '-averageRating'},
+    {name: 'Episode', filterProperty: 'episodeCount'},
+    {name: '-Episode', filterProperty: '-episodeCount'},
+    {name: 'Date', filterProperty: 'startDate'},
+    {name: '-Date', filterProperty: '-startDate'},
 ]
 
 const Home: React.FC = () => {
     const [searchValue, setSearchValue] = useState('')
     const [offset, setOffset] = useState(1)
     const [page, setPage] = useState(1)
-    const [selected, setSelected] = useState(filters[0])
+    const [selected, setSelected] = useState<FiltersType>(filters[0])
     const debounced = useDebounce(searchValue)
     const navigate = useNavigate()
     const location = useLocation()
@@ -28,7 +36,7 @@ const Home: React.FC = () => {
     // Requests for api
     const queryOffset = offset > 0 ? `&page[offset]=${offset}` : ''
     const querySearch = debounced ? `&filter[text]=${debounced}` : ''
-    const rating = filters.includes(selected) && selected !== filters[0] ? `sort=-${selected}` : ''
+    const rating = selected && selected.name !== filters[0].name ? `sort=${selected.filterProperty}` : ''
 
     const {data, isFetching} = useGetAnimeQuery({
         queryOffset,
@@ -43,7 +51,7 @@ const Home: React.FC = () => {
 
         const params = {
             page: page,
-            filter: selected !== filters[0] ? selected : 'default',
+            filter: selected?.name !== filters[0]?.name ? selected?.name : 'Default',
             search
         }
 
@@ -57,28 +65,37 @@ const Home: React.FC = () => {
         if (location.search) {
             const params = qs.parse(location.search.substring(1)) as unknown as SearchAnimeParams
 
-            if (params.page === 2) {
+            if (params.page == 2) {
                 setOffset(9)
             }
             if (params.page > 2) {
                 setOffset((params.page * 8 + 1) - 8)
             }
-            if (params.filter !== 'default') {
-                setSelected(params.filter)
+            if (params.filter !== 'Default') {
+                const paramsFilter = filters.filter(filter => filter.name == params.filter)
+                setSelected(paramsFilter[0] || filters[0])
             }
             setPage(Number(params.page))
             setSearchValue(params.search ?? '')
         }
     }, []);
 
+    // Reset page after changes
+    useEffect(() => {
+        if (searchValue) {
+            setOffset(1)
+            setPage(1)
+        }
+    }, [debounced, selected])
+
     const onPagePlus = () => {
-        setOffset(offset + 8)
-        setPage(page + 1)
+        setOffset(offset => offset + 8)
+        setPage(page => page + 1)
     }
     const onPageMinus = () => {
         if (offset - 8 > 0) {
-            setOffset(offset - 8)
-            setPage(page - 1)
+            setOffset(offset => offset - 8)
+            setPage(page => page - 1)
         }
     }
 
@@ -93,7 +110,9 @@ const Home: React.FC = () => {
                 <Search offset={offset}
                         setOffset={setOffset}
                         setPage={setPage}
+                        selected={selected}
                         debounced={debounced}
+                        filters={filters}
                         setSearchValue={setSearchValue}
                         searchValue={searchValue}/>
                 <ListBox setSelected={setSelected} selected={selected} filters={filters}/>

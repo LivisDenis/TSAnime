@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {FiltersType} from "../pages/Home";
 
 type SearchPropsType = {
     setSearchValue: React.Dispatch<React.SetStateAction<string>>
@@ -6,20 +7,13 @@ type SearchPropsType = {
     setPage: React.Dispatch<React.SetStateAction<number>>
     searchValue: string
     debounced: string
+    selected: FiltersType
+    filters: FiltersType[]
     offset: number
 }
 
-const Search: React.FC<SearchPropsType> = ({setSearchValue, searchValue, setOffset, debounced, setPage}) => {
-
-    useEffect(() => {
-        if (searchValue) {
-            setOffset(1)
-            setPage(1)
-        }
-        // if (offset > 1 && !searchValue) {
-        //     setOffset(0)
-        // }
-    }, [debounced])
+const Search: React.FC<SearchPropsType> = (props) => {
+    const {setSearchValue, searchValue} = props
 
     return (
         <div className={'relative mr-7 max-[740px]:mr-4 max-[740px]:w-[50%]'}>
